@@ -37,10 +37,8 @@
     "prepare": "is-ci || husky install .husky"
   },
   "lint-staged": {
-    "**/*.{js,jsx,tsx,ts,less,md,json}": [
-    ],
-    "*.ts": [
-    ]
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [],
+    "*.ts": []
   },
   "commitlint": {
     "extends": [
@@ -77,6 +75,13 @@
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "coveralls": "^3.1.1",
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.1.0",
     "husky": "^7.0.2",
     "imagediff": "^1.0.8",
     "is-ci": "^3.0.0",
@@ -96,13 +101,6 @@
     "rollup-plugin-filesize": "^9.1.1",
     "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.3.1",
-    "eslint": "^7.22.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^5.1.0",
     "typescript": "^4.4.3"
   },
   "repository": {
