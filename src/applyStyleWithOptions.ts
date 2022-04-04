@@ -19,7 +19,7 @@ export function applyStyleWithOptions<T extends HTMLElement>(
   }
 
   const manual = options.style
-  if (manual != null) {
+  if (manual) {
     Object.keys(manual).forEach((key: any) => {
       style[key] = manual[key] as string
     })

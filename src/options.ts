@@ -30,6 +30,10 @@ export interface Options {
    */
   filter?: (domNode: HTMLElement) => boolean
   /**
+   * A function to process node
+   */
+  processPdf?: <T extends HTMLElement>(domNode: T) => T
+  /**
    * A number between `0` and `1` indicating image quality (e.g. 0.92 => 92%)
    * of the JPEG image.
    */

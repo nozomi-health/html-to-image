@@ -24,6 +24,7 @@ async function cloneVideoElement(node: HTMLVideoElement, options: Options) {
 async function cloneSingleNode<T extends HTMLElement>(
   node: T,
   options: Options,
+  isRoot?: boolean,
 ): Promise<HTMLElement> {
   if (node instanceof HTMLCanvasElement) {
     return cloneCanvasElement(node)
@@ -33,7 +34,42 @@ async function cloneSingleNode<T extends HTMLElement>(
     return cloneVideoElement(node, options)
   }
 
+  if (isRoot && options?.processPdf) {
+    const container = await options.processPdf!(node)
+
+    return Promise.resolve(container.cloneNode(true) as T)
+  }
+
   return Promise.resolve(node.cloneNode(false) as T)
+}
+
+function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
+  const source = window.getComputedStyle(nativeNode)
+  const target = clonedNode.style
+
+  if (!target) {
+    return
+  }
+
+  if (source.cssText) {
+    target.cssText = source.cssText
+  } else {
+    toArray<string>(source).forEach((name) => {
+      const originValue = source.getPropertyValue(name)
+      const styleValue = originValue
+      target.setProperty(name, styleValue, source.getPropertyPriority(name))
+    })
+  }
+}
+
+function cloneInputValue<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
+  if (nativeNode instanceof HTMLTextAreaElement) {
+    clonedNode.innerHTML = nativeNode.value
+  }
+
+  if (nativeNode instanceof HTMLInputElement) {
+    clonedNode.setAttribute('value', nativeNode.value)
+  }
 }
 
 const isSlotElement = (node: HTMLElement): node is HTMLSlotElement =>
@@ -48,7 +84,6 @@ async function cloneChildren<T extends HTMLElement>(
     isSlotElement(nativeNode) && nativeNode.assignedNodes
       ? toArray<T>(nativeNode.assignedNodes())
       : toArray<T>((nativeNode.shadowRoot ?? nativeNode).childNodes)
-
   if (children.length === 0 || nativeNode instanceof HTMLVideoElement) {
     return Promise.resolve(clonedNode)
   }
@@ -68,37 +103,6 @@ async function cloneChildren<T extends HTMLElement>(
       Promise.resolve(),
     )
     .then(() => clonedNode)
-}
-
-function cloneCSSStyle<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
-  const source = window.getComputedStyle(nativeNode)
-  const target = clonedNode.style
-
-  if (!target) {
-    return
-  }
-
-  if (source.cssText) {
-    target.cssText = source.cssText
-  } else {
-    toArray<string>(source).forEach((name) => {
-      target.setProperty(
-        name,
-        source.getPropertyValue(name),
-        source.getPropertyPriority(name),
-      )
-    })
-  }
-}
-
-function cloneInputValue<T extends HTMLElement>(nativeNode: T, clonedNode: T) {
-  if (nativeNode instanceof HTMLTextAreaElement) {
-    clonedNode.innerHTML = nativeNode.value
-  }
-
-  if (nativeNode instanceof HTMLInputElement) {
-    clonedNode.setAttribute('value', nativeNode.value)
-  }
 }
 
 async function decorate<T extends HTMLElement>(
@@ -126,7 +130,15 @@ export async function cloneNode<T extends HTMLElement>(
   }
 
   return Promise.resolve(node)
-    .then((clonedNode) => cloneSingleNode(clonedNode, options) as Promise<T>)
-    .then((clonedNode) => cloneChildren(node, clonedNode, options))
+    .then(
+      (clonedNode) =>
+        cloneSingleNode(clonedNode, options, isRoot) as Promise<T>,
+    )
+    .then((clonedNode) => {
+      if (isRoot && options?.processPdf) {
+        return clonedNode
+      }
+      return cloneChildren(node, clonedNode, options)
+    })
     .then((clonedNode) => decorate(node, clonedNode))
 }

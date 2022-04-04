@@ -108,7 +108,6 @@ export namespace Helper {
   }
 
   export async function check(dataUrl: string) {
-    // console.log(dataUrl)
     return Promise.resolve(dataUrl).then(drawDataUrl).then(compareToRefImage)
   }
 
@@ -165,7 +164,6 @@ export namespace Helper {
 
     context.imageSmoothingEnabled = false
     context.drawImage(image, 0, 0)
-    // console.log(canvas.toDataURL())
     return image
   }
 }
@@ -177,7 +175,6 @@ export namespace Helper {
         .then(drawDataUrl)
         .then(() =>
           recognize(getCanvasNode().toDataURL()).then((text: string) => {
-            // console.log(text)
             expect(lines.every((line) => text.includes(line))).toBe(true)
           }),
         )
@@ -197,7 +194,6 @@ export namespace Helper {
       .then((data) => {
         const result: string[] = []
         if (!data.IsErroredOnProcessing) {
-          // console.log(JSON.stringify(data.ParsedResults))
           data.ParsedResults.forEach(({ ParsedText }: any) => {
             if (ParsedText) {
               result.push(ParsedText)
