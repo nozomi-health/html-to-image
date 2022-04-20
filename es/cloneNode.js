@@ -42,7 +42,7 @@ function cloneSingleNode(node, options, isRoot) {
         return Promise.resolve(node.cloneNode(false));
     });
 }
-function cloneCSSStyle(nativeNode, clonedNode, options) {
+function cloneCSSStyle(nativeNode, clonedNode) {
     const source = window.getComputedStyle(nativeNode);
     const target = clonedNode.style;
     if (!target) {
@@ -90,13 +90,13 @@ function cloneChildren(nativeNode, clonedNode, options) {
             .then(() => clonedNode);
     });
 }
-function decorate(nativeNode, clonedNode, options) {
+function decorate(nativeNode, clonedNode) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!(clonedNode instanceof Element)) {
             return Promise.resolve(clonedNode);
         }
         return Promise.resolve()
-            .then(() => cloneCSSStyle(nativeNode, clonedNode, options))
+            .then(() => cloneCSSStyle(nativeNode, clonedNode))
             .then(() => clonePseudoElements(nativeNode, clonedNode))
             .then(() => cloneInputValue(nativeNode, clonedNode))
             .then(() => clonedNode);
@@ -115,7 +115,7 @@ export function cloneNode(node, options, isRoot) {
             }
             return cloneChildren(node, clonedNode, options);
         })
-            .then((clonedNode) => decorate(node, clonedNode, options));
+            .then((clonedNode) => decorate(node, clonedNode));
     });
 }
 //# sourceMappingURL=cloneNode.js.map

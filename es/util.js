@@ -83,19 +83,9 @@ export function toArray(arrayLike) {
     }
     return arr;
 }
-function px(node, styleProperty) {
+export function px(node, styleProperty) {
     const val = window.getComputedStyle(node).getPropertyValue(styleProperty);
     return parseFloat(val.replace('px', ''));
-}
-export function getNodeWidth(node) {
-    const leftBorder = px(node, 'border-left-width');
-    const rightBorder = px(node, 'border-right-width');
-    return node.clientWidth + leftBorder + rightBorder;
-}
-export function getNodeHeight(node) {
-    const topBorder = px(node, 'border-top-width');
-    const bottomBorder = px(node, 'border-bottom-width');
-    return node.clientHeight + topBorder + bottomBorder;
 }
 export function getPixelRatio() {
     let ratio;

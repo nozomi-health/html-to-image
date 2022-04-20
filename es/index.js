@@ -11,7 +11,17 @@ import { cloneNode } from './cloneNode';
 import { embedImages } from './embedImages';
 import { applyStyleWithOptions } from './applyStyleWithOptions';
 import { embedWebFonts, getWebFontCSS } from './embedWebFonts';
-import { getNodeWidth, getNodeHeight, getPixelRatio, createImage, canvasToBlob, nodeToDataURL, SVG_PREFIX, } from './util';
+import { px, getPixelRatio, createImage, canvasToBlob, nodeToDataURL, SVG_PREFIX, } from './util';
+export function getNodeWidth(node) {
+    const leftBorder = px(node, 'border-left-width');
+    const rightBorder = px(node, 'border-right-width');
+    return node.clientWidth + leftBorder + rightBorder;
+}
+export function getNodeHeight(node) {
+    const topBorder = px(node, 'border-top-width');
+    const bottomBorder = px(node, 'border-bottom-width');
+    return node.clientHeight + topBorder + bottomBorder;
+}
 function getImageSize(node, options = {}) {
     const width = options.width || getNodeWidth(node);
     const height = options.height || getNodeHeight(node);

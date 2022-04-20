@@ -4,14 +4,25 @@ import { embedImages } from './embedImages'
 import { applyStyleWithOptions } from './applyStyleWithOptions'
 import { embedWebFonts, getWebFontCSS } from './embedWebFonts'
 import {
-  getNodeWidth,
-  getNodeHeight,
+  px,
   getPixelRatio,
   createImage,
   canvasToBlob,
   nodeToDataURL,
   SVG_PREFIX,
 } from './util'
+
+export function getNodeWidth(node: HTMLElement) {
+  const leftBorder = px(node, 'border-left-width')
+  const rightBorder = px(node, 'border-right-width')
+  return node.clientWidth + leftBorder + rightBorder
+}
+
+export function getNodeHeight(node: HTMLElement) {
+  const topBorder = px(node, 'border-top-width')
+  const bottomBorder = px(node, 'border-bottom-width')
+  return node.clientHeight + topBorder + bottomBorder
+}
 
 function getImageSize(node: HTMLElement, options: Options = {}) {
   const width = options.width || getNodeWidth(node)

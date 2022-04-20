@@ -100,21 +100,9 @@ export function toArray<T>(arrayLike: any): T[] {
   return arr
 }
 
-function px(node: HTMLElement, styleProperty: string) {
+export function px(node: HTMLElement, styleProperty: string) {
   const val = window.getComputedStyle(node).getPropertyValue(styleProperty)
   return parseFloat(val.replace('px', ''))
-}
-
-export function getNodeWidth(node: HTMLElement) {
-  const leftBorder = px(node, 'border-left-width')
-  const rightBorder = px(node, 'border-right-width')
-  return node.clientWidth + leftBorder + rightBorder
-}
-
-export function getNodeHeight(node: HTMLElement) {
-  const topBorder = px(node, 'border-top-width')
-  const bottomBorder = px(node, 'border-bottom-width')
-  return node.clientHeight + topBorder + bottomBorder
 }
 
 export function getPixelRatio() {

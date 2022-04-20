@@ -1,4 +1,6 @@
 import { Options } from './options';
+export declare function getNodeWidth(node: HTMLElement): number;
+export declare function getNodeHeight(node: HTMLElement): number;
 export declare function toSvg<T extends HTMLElement>(node: T, options?: Options): Promise<string>;
 export declare function toCanvas<T extends HTMLElement>(node: T, options?: Options): Promise<HTMLCanvasElement>;
 export declare function toPixelData<T extends HTMLElement>(node: T, options?: Options): Promise<Uint8ClampedArray>;
